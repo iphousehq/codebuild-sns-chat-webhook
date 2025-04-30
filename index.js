@@ -347,7 +347,7 @@ function generateCardForCodePipelineApproval(json) {
 
 exports.handler = function(event, context) {
 	console.log(JSON.stringify(event, null, 2));
-    console.log('From SNS:', event.Records[0].Sns.Message);
+	console.log('From SNS:', event.Records[0].Sns.Message);
 
     var message = event.Records[0].Sns.Message;
 	var jsonMessage = JSON.parse(message);
@@ -370,7 +370,7 @@ exports.handler = function(event, context) {
 	
     var options = {
         method: 'POST',
-        hostname: 'itipsorg.webhook.office.com',
+        hostname: 'prod-103.westus.logic.azure.com',
         port: 443,
         path: process.env.CHAT_API_PATH
     };
