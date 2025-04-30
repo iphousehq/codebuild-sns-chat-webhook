@@ -372,18 +372,29 @@ exports.handler = function(event, context) {
         method: 'POST',
         hostname: 'prod-103.westus.logic.azure.com',
         port: 443,
-        path: process.env.CHAT_API_PATH
+        path: process.env.CHAT_API_PATH,
+		headers: {
+			'Content-Type': 'application/json',
+			'Content-Length': Buffer.byteLength(cardJson)
+		}
     };
 
     var req = https.request(options, function(res) {
-      res.setEncoding('utf8');
-      res.on('data', (d) => {
-	    console.log(d);
-	  });
+		res.setEncoding('utf8');
+		
+		let responseData = '';
+		
+		res.on('data', (chunk) => {
+			responseData += chunk;
+		});
+	  
+		res.on('end', () => {
+			console.log('Response:', responseData);
+		});
     });
     
-    req.on('error', function(e) {
-      console.log('problem with request: ' + e.message);
+    req.on('error', function(error) {
+		console.log('Error with request: ' + error.message);
     });    
     
     req.write(cardJson);
